@@ -4,22 +4,17 @@ using System.IO;
 using System;
 using System.Text;
 
-//音楽の長さは time = 5700
 public sealed class Game : GameBase
 {
     // 変数の宣言
     private int height = 1080;
     private int width = 1920;
-    
     //private int gameScene = -1;
     private int gameScene = 1;
     private int time = 0;
-    
     private const int music_end = 5820;
-
     private int hanbetuBarX = 200;  //タイミングが合っているか判断するための棒の横幅
-    //private int x = 1720;
-    
+
     //ノーツの情報
     private int[] notes = new int[0];
     private int[] notes_x = new int[0];  //現在使われている各ノーツのx座標
@@ -31,6 +26,7 @@ public sealed class Game : GameBase
     int note_w = 50;
     int note_h = 50;
 
+    //プレイヤー情報
     private int playerHP = 10;
     private int player_x = 150;
     private int player_y = 550;
