@@ -14,6 +14,7 @@ public sealed class Game : GameBase
     //private int gameScene = 2;
     private int time = 0;
     private const int music_end = 5820;
+    private int combo = 0;
     private int hanbetuBarX = 200;  //タイミングが合っているか判断するための棒の横幅
 
     //ノーツの情報
@@ -30,7 +31,7 @@ public sealed class Game : GameBase
     };
     private int[] notes_x = new int[0];  //現在使われている各ノーツのx座標
     private int notes_idx = 0;  //現在使われているノーツの合計
-   private int notes_lost = 0;  //ミスしたノーツの数
+    private int notes_lost = 0;  //ミスしたノーツの数
     private int notes_sum = 124;  //すべてのノーツの個数
     private const int note_x = 1960;
     private int note_y = 175;
@@ -43,7 +44,16 @@ public sealed class Game : GameBase
     private int player_y = 550;
     private int player_action = 0;  //プレイヤーアクションの処理が必要か
     private int player_time = 0;  //プレイヤーアクションの時間計測
-
+    
+    //敵の情報  3:エボラウイルス　4:コロナウイルス  5:MERSウイルス
+    private int[] enemy1 = new int[7] {0, 950, 400, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
+    private int[] enemy2 = new int[7] {0, 1450, 600, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
+    
+    //ブドウ糖の情報
+    private int enegy_y = 500;  //ブドウ糖のｙ座標
+    private int enegy_action = 0;  //ブドウ糖のアクションが必要か
+    private int enegy_time = 0;  //ブドウ糖アクションの時間計測
+    private int alp = 250;
 
     public override void InitGame()
     {
@@ -76,8 +86,23 @@ public sealed class Game : GameBase
                     AddNotes();
             }
 
-            if (time == music_end)
+            if (time == music_end)  //音楽が終了したら結果の画面へ
                 gameScene = 2;
+
+            if (enemy1[6] == 0 & enemy2[6] == 0)  //敵の生成
+            {
+                enemy1[0] = gc.Random(3, 5);
+                enemy1[3] = enemy1[0];
+                enemy1[6] = 1;
+                enemy2[0] = gc.Random(3, 5);
+                enemy2[3] = enemy2[0];
+                enemy2[6] = 1;
+            }
+
+            if (enemy1[3] == 0)
+                enemy1[6] = 0;
+            if (enemy2[3] == 0)
+                enemy2[6] = 0;
 
             time++;
         }
@@ -119,8 +144,13 @@ public sealed class Game : GameBase
                     {
                         notes_x[i] = notes_x[notes_idx - 1];
                         notes_idx--;
+                        combo++;
                         player_action = 1;
                         player_time = 0;
+                        if (enemy1[6] == 1)
+                            enemy1[3]--;
+                        else if (enemy2[6] == 1)
+                            enemy2[3]--;
                     }
 
             if (player_action == 1)  //プレイヤーのアクション処理
@@ -136,17 +166,93 @@ public sealed class Game : GameBase
             }
             player_time++;
 
+            if (enemy1[4] == 1)  //enemy１のアクション
+            {
+                if (enemy1[5] % 3 == 0)
+                    enemy1[1] -= 50;
+                if (enemy1[5] == 9)
+                {
+                    enemy1[4] = 0;
+                    enemy1[1] = 950;
+                }
+            }
+            enemy1[5]++;
+            
+            if (enemy2[4] == 1)  //enemy2のアクション
+            {
+                if (enemy2[5] % 3 == 0)
+                    enemy2[1] -= 50;
+                if (enemy2[5] == 9)
+                {
+                    enemy2[4] = 0;
+                    enemy2[1] = 1450;
+                }
+            }
+            enemy2[5]++;
+
+            if (enegy_action == 1)  //ブドウ糖のアクション
+            {
+                if (enegy_time % 2 == 0)
+                {
+                    enegy_y -= 15;
+                    alp -= 5;
+                    //gc.SetImageMultiplyColor(color, color, color, color, color);
+                    //gc.SetImageMultiplyColor(200, 200, 200, 200);
+                    gc.SetImageAlpha(alp);
+                    gc.DrawImage(7, 670, enegy_y);
+                    gc.ClearImageMultiplyColor();
+                }
+
+                if (enegy_time == 20)
+                {
+                    enegy_action = 0;
+                    alp = 250;
+                    enegy_y = 500;
+                    playerHP++;
+                }
+            }
+            enegy_time++;
+            
             for (int i = 0; i < notes_idx; i++)  //ノーツをタイミングよくタッチできなかった時の処理
                 if (notes_x[i] <= -156)
                 {
                     notes_x[i] = notes_x[notes_idx - 1];
                     notes_idx--;
                     notes_lost++;
-                    playerHP--;
+                    combo = 0;
+                    if (enemy1[6] == 1)
+                    {
+                        playerHP--;
+                        enemy1[4] = 1;
+                        enemy1[5] = 0;
+                    }
+                    if (enemy2[6] == 1)
+                    {
+                        playerHP--;
+                        enemy2[4] = 1;
+                        enemy2[5] = 0;
+                    }
                 }
 
+            gc.DrawString("COMBO: " + combo, 0, 0);
+            if (enemy1[6] == 1)
+            {
+                gc.DrawImage(enemy1[0], enemy1[1], enemy1[2]);
+                DrawHPbar("enemy1");
+            }
+            if (enemy2[6] == 1)
+            {
+                gc.DrawImage(enemy2[0], enemy2[1], enemy2[2]);
+                DrawHPbar("enemy2");
+            }
             gc.DrawImage(1, player_x, player_y);  //プレイヤー(白血球)
             DrawHPbar("player");
+
+            if (combo % 10 == 0 & combo != 0 & playerHP < 10 )
+            {
+                enegy_time = 0;
+                enegy_action = 1;
+            }
         }
 
         if (gameScene == 2)
@@ -189,6 +295,22 @@ public sealed class Game : GameBase
             gc.FillRect(150, 480, 500, 30);
             gc.SetColor(0, 255, 0);
             gc.FillRect(150, 480, playerHP*50, 30);
+        }
+
+        if (mode == "enemy1")
+        {
+            gc.SetColor(125, 125, 125);
+            gc.FillRect(enemy1[1], enemy1[2]-70, 400, 30);
+            gc.SetColor(255, 0, 0);
+            gc.FillRect(enemy1[1], enemy1[2]-70, enemy1[3]*400/enemy1[0], 30);
+        }
+        
+        if (mode == "enemy2")
+        {
+            gc.SetColor(125, 125, 125);
+            gc.FillRect(enemy2[1], enemy2[2]-70, 400, 30);
+            gc.SetColor(255, 0, 0);
+            gc.FillRect(enemy2[1], enemy2[2]-70, enemy2[3]*400/enemy2[0], 30);
         }
     }
 }
