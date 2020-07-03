@@ -10,10 +10,14 @@ public sealed class Game : GameBase
     private int height = 1080;
     private int width = 1920;
     //private int gameScene = -1;
-    private int gameScene = 1;
+    private int gameScene = 0;
     //private int gameScene = 2;
     private int time = 0;
     private const int music_end = 5820;
+    int music = 0;
+    private int gimic_flag = 0;  //タイトル画面のギミック
+    private int gimic_x = 1920;
+    private Single gimic_deg = 0;
     private int combo = 0;
     private int hanbetuBarX = 200;  //タイミングが合っているか判断するための棒の横幅
 
@@ -57,12 +61,14 @@ public sealed class Game : GameBase
     private int[] effect_x = new int[30];  //ブドウ糖使用時のエフェクトのx座標
     private int[] effect_y = new int[30];  // //ブドウ糖使用時のエフェクトのy座標
     private int heart_flag = 1; //心臓の画像の判定
+    
+    
 
     public override void InitGame()
     {
         // キャンバスの大きさを設定します
         gc.SetResolution(width, height);
-        gc.SetSoundVolume(1);
+        gc.SetSoundVolume(10);
 
         CreateEffects();
         
@@ -127,12 +133,35 @@ public sealed class Game : GameBase
 
         if (gameScene == 0)
         {
+            gc.PlaySound(1, true);
+            gc.DrawImage(11, 0, 0);
+            if (gc.GetPointerFrameCount(0) == 1)
+                gameScene = 1;
+            
+            //ギミック
+            
+            if (gc.Random(0, 2500) == 0)
+                gimic_flag = 1;
+            if (gimic_flag == 1)
+            {
+                gc.DrawScaledRotateImage(0, gimic_x, 640, 100, 100, gimic_deg);
+                gimic_x -= 5;
+                gimic_deg+=4;
+                if (gimic_x == -210)
+                {
+                    gimic_flag = 0;
+                    gimic_deg = 0;
+                    gimic_x = 1920;
+                }
+            }
+            
             
         }
+
         
         if (gameScene == 1)
         {
-            gc.PlaySound(0, false);
+            gc.PlaySound(music, false);
             CreateMainScreen();
             
             for (int i = 0; i < notes_idx; i++)  //ノーツの移動
