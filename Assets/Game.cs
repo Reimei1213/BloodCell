@@ -54,12 +54,17 @@ public sealed class Game : GameBase
     private int enegy_action = 0;  //ブドウ糖のアクションが必要か
     private int enegy_time = 0;  //ブドウ糖アクションの時間計測
     private int alp = 250;
+    private int[] effect_x = new int[30];  //ブドウ糖使用時のエフェクトのx座標
+    private int[] effect_y = new int[30];  // //ブドウ糖使用時のエフェクトのy座標
+    private int heart_flag = 1; //心臓の画像の判定
 
     public override void InitGame()
     {
         // キャンバスの大きさを設定します
         gc.SetResolution(width, height);
         gc.SetSoundVolume(1);
+
+        CreateEffects();
         
         if (gameScene != -1)
         {
@@ -132,11 +137,11 @@ public sealed class Game : GameBase
             
             for (int i = 0; i < notes_idx; i++)  //ノーツの移動
             {
-                gc.DrawImage(0, notes_x[i]-106, note_y-75);  //赤血球
                 gc.FillRect(notes_x[i], note_y, note_w, note_h);  //判定用の正方形
+                gc.DrawImage(0, notes_x[i]-106, note_y-75);  //赤血球
                 notes_x[i] -= 30;
             }
-            
+
             if (gc.GetPointerFrameCount(0) == 1)
                 //ノーツをタイミングよくたっぷできたとき
                 for(int i=0; i<notes_idx; i++)
@@ -190,29 +195,6 @@ public sealed class Game : GameBase
             }
             enemy2[5]++;
 
-            if (enegy_action == 1)  //ブドウ糖のアクション
-            {
-                if (enegy_time % 2 == 0)
-                {
-                    enegy_y -= 15;
-                    alp -= 5;
-                    //gc.SetImageMultiplyColor(color, color, color, color, color);
-                    //gc.SetImageMultiplyColor(200, 200, 200, 200);
-                    gc.SetImageAlpha(alp);
-                    gc.DrawImage(7, 670, enegy_y);
-                    gc.ClearImageMultiplyColor();
-                }
-
-                if (enegy_time == 20)
-                {
-                    enegy_action = 0;
-                    alp = 250;
-                    enegy_y = 500;
-                    playerHP++;
-                }
-            }
-            enegy_time++;
-            
             for (int i = 0; i < notes_idx; i++)  //ノーツをタイミングよくタッチできなかった時の処理
                 if (notes_x[i] <= -156)
                 {
@@ -234,6 +216,7 @@ public sealed class Game : GameBase
                     }
                 }
 
+            gc.SetColor(0, 0, 0);
             gc.DrawString("COMBO: " + combo, 0, 0);
             if (enemy1[6] == 1)
             {
@@ -253,6 +236,29 @@ public sealed class Game : GameBase
                 enegy_time = 0;
                 enegy_action = 1;
             }
+            
+            if (enegy_action == 1)  //ブドウ糖のアクション
+            {
+                if (enegy_time % 2 == 0)
+                {
+                    enegy_y -= 15;
+                    alp -= 5;
+                    gc.SetImageAlpha(alp);
+                    gc.DrawImage(7, 670, enegy_y);
+                    gc.ClearImageMultiplyColor();
+                    DrawEffects();
+                }
+
+                if (enegy_time == 20)
+                {
+                    enegy_action = 0;
+                    alp = 250;
+                    enegy_y = 500;
+                    playerHP++;
+                    CreateEffects();
+                }
+            }
+            enegy_time++;
         }
 
         if (gameScene == 2)
@@ -274,10 +280,16 @@ public sealed class Game : GameBase
     void CreateMainScreen()
     {
         gc.SetColor(140, 0, 0, 150);  //濃い赤
+        gc.FillRect(100, 100, hanbetuBarX, 200);  //タイミングが合っているかあっていないか判断する棒
         gc.DrawImage(6, 0, 0);  //背景画像
         gc.FillRect(0, 100, width, 200);  //ノーツが流れてくるレーン
-        gc.SetColor(0, 0, 0);  //黒
-        gc.FillRect(100, 100, hanbetuBarX, 200);  //タイミングが合っているかあっていないか判断する棒
+        //gc.SetColor(0, 0, 0);  //黒
+        if(heart_flag == 1)
+            gc.DrawImage(8, 100, 100);
+        else
+            gc.DrawImage(9, 50, 50);
+        if (time % 30 == 0)
+            heart_flag *= -1;
     }
 
     void AddNotes()
@@ -311,6 +323,26 @@ public sealed class Game : GameBase
             gc.FillRect(enemy2[1], enemy2[2]-70, 400, 30);
             gc.SetColor(255, 0, 0);
             gc.FillRect(enemy2[1], enemy2[2]-70, enemy2[3]*400/enemy2[0], 30);
+        }
+    }
+
+    void CreateEffects()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            effect_x[i] = gc.Random(150, 650);
+            effect_y[i] = gc.Random(550, 1050);
+        }
+    }
+
+    void DrawEffects()
+    {
+        int effects_speed = 5;
+        gc.SetColor(255, 255, 255);
+        for (int i = 0; i < 30; i++)
+        {
+            gc.FillCircle(effect_x[i], effect_y[i], 5);
+            effect_y[i] -= effects_speed;
         }
     }
 }

@@ -1,0 +1,11 @@
+【snd0 : 花鳥諷詠 written by 龍崎一】
+https://dova-s.jp/bgm/play5392.html
+
+【img : いらすとや】
+https://www.irasutoya.com/p/terms.html
+
+【ゲーム制作にあたり参考にしたページ】
+[Unity]シンプルな音ゲーの作り方 part1　譜面作成
+https://qiita.com/Teach/items/12a2e3b2f8c09dbbc5bd
+[Unity]シンプルな音ゲーの作り方 part2 ゲーム製作
+https://qiita.com/Teach/items/e8343fe0405da7ebd5fc
