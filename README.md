@@ -28,6 +28,6 @@ Assets/Res/img0~9, 12は [いらすとや](https://www.irasutoya.com/p/terms.htm
 
 Assets/Res/snd0(花鳥諷詠) は [DOVA-SYNDROME](https://dova-s.jp/bgm/play5392.html)の龍崎一 様
 
-Assets/Res/snd1~3 は [魔王魂] (https://maoudamashii.jokersounds.com/)様
+Assets/Res/snd1~3 は [魔王魂](https://maoudamashii.jokersounds.com/) 様
 
 こちらの方々の素材を利用させていただきました。
