@@ -1,6 +1,6 @@
 ## Blood Cell
 
-慶應義塾大学『スマートデバイスプログラミング』にて教材として使われている **GameCanvas for Unity** という
+慶應義塾大学『スマートデバイスプログラミング』にて教材として使われている [**GameCanvas for Unity**](https://github.com/sfc-sdp/GameCanvas-Unity) という
 2Dゲームフレームワークを利用して作ったゲームです。
 
 リポジトリ の名前はTatakauSaiboとなっていますが、タイトル画面を作る際、某漫画とどうしても似てしまい、
