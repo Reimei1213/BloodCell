@@ -28,10 +28,10 @@ Unityリモートでは少し重たく、想定とは異なる挙動をしてし
 
 ## 素材について
 
-Assets/Res/img0~9, 12は [いらすとや](https://www.irasutoya.com/) 様
+Assets/Res/img0~9, 12  [いらすとや](https://www.irasutoya.com/) 様
 
-Assets/Res/snd0(花鳥諷詠) は [DOVA-SYNDROME](https://dova-s.jp/bgm/play5392.html)の龍崎一 様
+Assets/Res/snd0(花鳥諷詠)   [DOVA-SYNDROME](https://dova-s.jp/bgm/play5392.html)の龍崎一 様
 
-Assets/Res/snd1~3 は [魔王魂](https://maoudamashii.jokersounds.com/) 様
+Assets/Res/snd1~3   [魔王魂](https://maoudamashii.jokersounds.com/) 様
 
 こちらの方々の素材を利用させていただきました。

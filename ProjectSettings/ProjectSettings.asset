@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Keio University
-  productName: Blood Cell
+  productName: t20154ro
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -166,7 +166,7 @@ PlayerSettings:
     Android: jp.ac.keio.sfc.sdp
     Standalone: unity.Keio University.GameCanvas
     Tizen: jp.ac.keio.sfc.sdp
-    iPhone: jp.ac.keio.sfc.sdp
+    iPhone: jp.ac.keio.sfc.t20154ro
     tvOS: jp.ac.keio.sfc.sdp
   buildNumber:
     iPhone: 0
@@ -186,7 +186,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 0
   VertexChannelCompressionMask: 0
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 10.0
+  iOSTargetOSVersionString: 
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 10.0
@@ -599,7 +599,7 @@ PlayerSettings:
   enableCrashReportAPI: 0
   cameraUsageDescription: made by GameCanvas
   locationUsageDescription: made by GameCanvas
-  microphoneUsageDescription: 
+  microphoneUsageDescription: GameCanvas
   switchNetLibKey: 
   switchSocketMemoryPoolSize: 6144
   switchSocketAllocatorPoolSize: 128
