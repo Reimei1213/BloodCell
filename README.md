@@ -22,7 +22,8 @@ Unityリモートでは少し重たく、想定とは異なる挙動をしてし
 
 
 
-##素材について
+## 素材について
+
 Assets/Res/img0~9, 12は [いらすとや](https://www.irasutoya.com/p/terms.html) 様
 
 Assets/Res/snd0(花鳥諷詠) は [DOVA-SYNDROME](https://dova-s.jp/bgm/play5392.html)の龍崎一 様
