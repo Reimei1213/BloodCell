@@ -13,7 +13,7 @@ public sealed class Game : GameBase
     private int gameScene = 0;
     //private int gameScene = 2;
     private int time = 0;
-    private const int music_end = 5820;
+    private const int music_end = 5720;
     int music = 0;
     private int gameOverFlag = 0;
     private int gimic_flag = 0;  //タイトル画面のギミック
@@ -74,14 +74,6 @@ public sealed class Game : GameBase
         gc.SetSoundVolume(10);
 
         CreateEffects();
-        
-        if (gameScene != -1)
-        {
-            //notes_sum = gc.Load(-1);
-            //Array.Resize(ref notes, notes_sum+1);
-            //for(int i=0; i<=notes_sum; i++)
-                //notes[i] = gc.Load(i) - 62;  //生成場所から判定場所まで１フレーム30px進むとしたら62フレーム必要
-        }
     }
 
     public override void UpdateGame()
@@ -265,7 +257,7 @@ public sealed class Game : GameBase
 
             if (playerHP <= 0)
             {
-                //gameOverFlag = 1;
+                gameOverFlag = 1;
                 gameScene = 2;
                 time = 0;
                 gc.StopSound();
@@ -333,13 +325,14 @@ public sealed class Game : GameBase
                     {
                         gc.SetFontSize(70);
                         gc.DrawString("Long Press", 800, 700);
+                        //gameOverFlag = 0;
 
                         if (gc.GetPointerFrameCount(0) == 60)
-                            gameScene = 0;
+                            Reset();
                     }
                 }
             }
-            else  //clear
+            else if(gameOverFlag==0)  //clear
             {
                 if (time > 180)
                 {
@@ -361,7 +354,7 @@ public sealed class Game : GameBase
                         gc.DrawString("Long Press", 800, 950);
                         gc.DrawScaledRotateImage(12, 900, 50, 130, 130, 0);
                         if (gc.GetPointerFrameCount(0) == 60)
-                            gameScene = 0;
+                            Reset();
                     }
                 }
             }
@@ -445,5 +438,38 @@ public sealed class Game : GameBase
             gc.FillCircle(effect_x[i], effect_y[i], 5);
             effect_y[i] -= effects_speed;
         }
+    }
+
+    void Reset()
+    {
+        gameScene = 0;
+        time = 0;
+        gameOverFlag = 0; 
+        combo = 0;
+        comboMax = 0;
+        notes_x = new int[0];  //現在使われている各ノーツのx座標
+        notes_idx = 0;  //現在使われているノーツの合計
+        notes_lost = 0;  //ミスしたノーツの数
+        notes_sum = 124;  //すべてのノーツの個数
+        note_y = 175;
+        note_w = 50;
+        note_h = 50;
+        playerHP = 10;
+        player_x = 150;
+        player_y = 550;
+        player_action = 0;  //プレイヤーアクションの処理が必要か
+        player_time = 0;  //プレイヤーアクションの時間計測
+        
+        //敵の情報  3:エボラウイルス　4:コロナウイルス  5:MERSウイルス
+        enemy1 = new int[7] {0, 950, 400, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
+        enemy2 = new int[7] {0, 1450, 600, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
+        enemy_kill = new int[3] {0, 0, 0};
+        
+        //ブドウ糖の情報
+        enegy_y = 500;  //ブドウ糖のｙ座標
+        enegy_action = 0;  //ブドウ糖のアクションが必要か
+        enegy_time = 0;  //ブドウ糖アクションの時間計測
+        alp = 250;
+        heart_flag = 1; //心臓の画像の判定
     }
 }
