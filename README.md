@@ -16,8 +16,10 @@ Unityリモートでは少し重たく、想定とは異なる挙動をしてし
 
 また、攻撃アクションをつけたり、回復のエフェクトをつけるなど細かい部分もこだわってみました。
 
-ゲーム制作にあたり参考にしたページ】
+【ゲーム制作にあたり参考にしたページ】
+
 [Unityシンプルな音ゲーの作り方part1譜面作成](https://qiita.com/Teach/items/12a2e3b2f8c09dbbc5bd)
+
 [Unityシンプルな音ゲーの作り方 part2ゲーム製作](https://qiita.com/Teach/items/e8343fe0405da7ebd5fc)
 
 
