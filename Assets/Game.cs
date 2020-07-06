@@ -15,10 +15,12 @@ public sealed class Game : GameBase
     private int time = 0;
     private const int music_end = 5820;
     int music = 0;
+    private int gameOverFlag = 0;
     private int gimic_flag = 0;  //タイトル画面のギミック
     private int gimic_x = 1920;
     private Single gimic_deg = 0;
     private int combo = 0;
+    private int comboMax = 0;
     private int hanbetuBarX = 200;  //タイミングが合っているか判断するための棒の横幅
 
     //ノーツの情報
@@ -52,6 +54,7 @@ public sealed class Game : GameBase
     //敵の情報  3:エボラウイルス　4:コロナウイルス  5:MERSウイルス
     private int[] enemy1 = new int[7] {0, 950, 400, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
     private int[] enemy2 = new int[7] {0, 1450, 600, 0, 0, 0, 0}; //敵の種類、ｘ、ｙ、ＨＰ、action, time, flag
+    private int[] enemy_kill = new int[3] {0, 0, 0};
     
     //ブドウ糖の情報
     private int enegy_y = 500;  //ブドウ糖のｙ座標
@@ -115,6 +118,11 @@ public sealed class Game : GameBase
             if (enemy2[3] == 0)
                 enemy2[6] = 0;
 
+            time++;
+        }
+
+        if (gameScene == 2)
+        {
             time++;
         }
        
@@ -182,9 +190,17 @@ public sealed class Game : GameBase
                         player_action = 1;
                         player_time = 0;
                         if (enemy1[6] == 1)
+                        {
                             enemy1[3]--;
+                            if (enemy1[3] == 0)
+                                enemy_kill[enemy1[0] - 3]++;
+                        }
                         else if (enemy2[6] == 1)
+                        {
                             enemy2[3]--;
+                            if (enemy2[3] == 0)
+                                enemy_kill[enemy2[0] - 3]++;
+                        }
                     }
 
             if (player_action == 1)  //プレイヤーのアクション処理
@@ -230,7 +246,6 @@ public sealed class Game : GameBase
                     notes_x[i] = notes_x[notes_idx - 1];
                     notes_idx--;
                     notes_lost++;
-                    combo = 0;
                     if (enemy1[6] == 1)
                     {
                         playerHP--;
@@ -243,10 +258,20 @@ public sealed class Game : GameBase
                         enemy2[4] = 1;
                         enemy2[5] = 0;
                     }
+                    if (combo > comboMax)
+                        comboMax = combo;
+                    combo = 0;
                 }
 
+            if (playerHP <= 0)
+            {
+                //gameOverFlag = 1;
+                gameScene = 2;
+                time = 0;
+                gc.StopSound();
+            }
+
             gc.SetColor(0, 0, 0);
-            gc.DrawString("COMBO: " + combo, 0, 0);
             if (enemy1[6] == 1)
             {
                 gc.DrawImage(enemy1[0], enemy1[1], enemy1[2]);
@@ -293,6 +318,53 @@ public sealed class Game : GameBase
         if (gameScene == 2)
         {
             gc.ClearScreen();
+            if (gameOverFlag == 1)  //gameover
+            {
+                gc.SetColor(0, 0, 0);
+                gc.FillRect(0, 0, 1920, 1080);
+                if (time > 180)
+                {
+                    gc.PlaySound(2, true);
+                    gc.SetColor(255, 255, 255);
+                    gc.SetFontSize(250);
+                    gc.DrawString("GameOver", 500, 400);
+
+                    if (time > 360)
+                    {
+                        gc.SetFontSize(70);
+                        gc.DrawString("Long Press", 800, 700);
+
+                        if (gc.GetPointerFrameCount(0) == 60)
+                            gameScene = 0;
+                    }
+                }
+            }
+            else  //clear
+            {
+                if (time > 180)
+                {
+                    gc.PlaySound(3, true);
+                    gc.SetColor(0, 0, 0);
+                    gc.SetFontSize(250);
+                    gc.DrawString("Clear!", 0, 0);
+
+                    if (time > 360)
+                    {
+                        int score = comboMax * 1000 + enemy_kill[0] * 300 + enemy_kill[1] * 400 + enemy_kill[2] * 500;
+                        gc.SetFontSize(70);
+                        gc.DrawString("Score: " + score, 200, 300);
+                        gc.DrawString("Combo: " + comboMax, 200, 400);
+                        gc.DrawString("排除したウイルス", 200, 500);
+                        gc.DrawString("エボラウイルス X " + enemy_kill[0], 300, 600);
+                        gc.DrawString("コロナウイルス X " + enemy_kill[1], 300, 700);
+                        gc.DrawString("MERSウイルス X " + enemy_kill[2], 300, 800);
+                        gc.DrawString("Long Press", 800, 950);
+                        gc.DrawScaledRotateImage(12, 900, 50, 130, 130, 0);
+                        if (gc.GetPointerFrameCount(0) == 60)
+                            gameScene = 0;
+                    }
+                }
+            }
         }
     }
 

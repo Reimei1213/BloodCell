@@ -27,11 +27,13 @@ MonoBehaviour:
   - img9
   - img10
   - img11
+  - img12
   VideoClips: []
   AudioClips:
   - {fileID: 8300000, guid: f85845e6e08144337a6b09d6deedb743, type: 3}
   - {fileID: 8300000, guid: 214c7ee804587b544993c09bad58397a, type: 3}
   - {fileID: 8300000, guid: ff36f61a4f9d2d9498a03fe75dd2621e, type: 3}
+  - {fileID: 8300000, guid: a96727c48a60c4292a97604fdc3de204, type: 3}
   TextAssets: []
   Fonts:
   - {fileID: 12800000, guid: 86bc9d489ff7b104198dbd36a4cb03b3, type: 3}
