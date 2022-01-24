@@ -1,4 +1,5 @@
 ## Blood Cell
+![movie](https://user-images.githubusercontent.com/34594195/150799037-8a299f1c-6bba-44ac-a766-df7f5bbcf727.gif)
 
 慶應義塾大学『スマートデバイスプログラミング』にて教材として使われている [**GameCanvas for Unity**](https://github.com/sfc-sdp/GameCanvas-Unity) という
 2Dゲームフレームワークを利用して作ったゲームです。
@@ -15,8 +16,6 @@ Unityリモートでは少し重たく、想定とは異なる挙動をしてし
 昨今コロナウイルスが流行っているので、血球やウイルスをテーマにしてみました。
 
 また、攻撃アクションをつけたり、回復のエフェクトをつけるなど細かい部分もこだわってみました。
-
-
 
 【ゲーム制作にあたり参考にしたページ】
 
